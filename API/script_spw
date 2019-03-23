@@ -1,0 +1,36 @@
+import libapi
+
+devices = [
+	{ 'ip': '172.16.16.13',
+	'login': 'user',
+	'pass': 'user'},
+	{ 'ip': '172.16.16.12',
+	'login': 'spw',
+	'pass': 'spw'},
+	{ 'ip': '172.16.16.14',
+	'login': 'user',
+	'pass': 'user'}]
+    
+for device in devices:
+	print("Connect to {}:".format(device['ip']))
+
+	s = libapi.socketOpen(device['ip'])
+	dev_api = libapi.ApiRos(s)
+
+	if not dev_api.login(device['login'], device['pass']):
+		break
+
+	inputsentence = ["/interface/print"]
+
+	dev_api.writeSentence(inputsentence)
+	
+	while 1:
+		response = dev_api.readSentence()
+		if response[0] != '!done':
+			print("    ", end='')
+			print(response)
+		else:
+			print("    Command complete: done")
+			break
+
+	libapi.socketClose(s)
