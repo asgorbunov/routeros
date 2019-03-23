@@ -1,0 +1,16 @@
+---
+
+- name: Save file from router
+  hosts: 172.16.16.12
+  gather_facts: false
+
+  tasks:
+       
+    - name: backup-file create
+      routeros_command:
+        commands: /system backup save name=backup_spw
+
+    - name: backup-file download
+      net_get:
+        src: backup_spw.backup
+        protocol: sftp

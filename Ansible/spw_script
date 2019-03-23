@@ -1,0 +1,17 @@
+---
+
+- name: file transfer command
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+       
+    - name: file upload
+      net_put:
+        src: ./hosts
+        protocol: sftp
+        
+    - name: file download
+      net_get:
+        src: test.rsc
+        protocol: sftp

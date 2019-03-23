@@ -1,0 +1,17 @@
+---
+
+- name: Create bridge-interfaces
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+       
+    - name: Create bridge
+      routeros_command:
+        commands:
+          - /interface bridge add name=br_spw
+          - /interface bridge print
+      register: bridge_print
+      
+    - name: debug print
+      debug: var=bridge_print.stdout_lines

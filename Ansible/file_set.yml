@@ -1,0 +1,20 @@
+---
+
+- name: Set file to router
+  hosts: 172.16.16.14
+  gather_facts: false
+
+  tasks:
+       
+    - name: file upload
+      net_put:
+        src: ./spw_script
+        protocol: sftp
+
+    - name: File demonstate after
+      routeros_command:
+        commands: /file print
+      register: file_after
+      
+    - name: debug print after
+      debug: var=file_after.stdout_lines
